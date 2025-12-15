@@ -1,6 +1,6 @@
 # DaftarNama Registrar & TLD Sync for FOSSBilling
 
-Extensi registrar DaftarNama untuk FOSSBilling, dibuat oleh apiku.id dengan bantuan AI, untuk import & sinkronisasi harga TLD dan operasi domain DaftarNama tanpa mengubah core.
+Extensi registrar DaftarNama untuk FOSSBilling, dibuat oleh apiku.id dengan bantuan AI, untuk import & sinkronisasi harga TLD dan operasi domain DaftarNama.
 
 ## Fitur
 - Registrar DaftarNama (registrasi, transfer, renew, nameserver, EPP, dll).
