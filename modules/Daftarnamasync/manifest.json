@@ -1,0 +1,8 @@
+{
+  "id": "daftarnamasync",
+  "type": "mod",
+  "name": "DaftarNama TLD Sync",
+  "description": "Import & sinkronisasi harga TLD DaftarNama tanpa mengubah core Servicedomain.",
+  "version": "1.0.0",
+  "has_settings": true
+}

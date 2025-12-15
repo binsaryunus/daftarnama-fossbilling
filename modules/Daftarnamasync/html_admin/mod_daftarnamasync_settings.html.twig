@@ -1,0 +1,161 @@
+{% extends 'layout_default.html.twig' %}
+
+{% block meta_title %}DaftarNama TLD Sync{% endblock %}
+{% set active_menu = 'extensions' %}
+
+{% block content %}
+<div class="page-header mb-3">
+    <div class="row align-items-center">
+        <div class="col">
+            <h2 class="page-title">DaftarNama TLD Sync</h2>
+            <div class="text-muted">Import & sinkronisasi harga TLD DaftarNama ke currency default FOSSBilling.</div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <form id="sync-form" class="row g-3" onsubmit="return false;">
+            <input type="hidden" id="csrf" value="{{ CSRFToken }}"/>
+            <div class="col-md-4">
+                <label class="form-label">Source currency</label>
+                <input class="form-control" type="text" id="source_currency" value="IDR">
+                <small class="form-hint">Currency dari API DaftarNama (mis. IDR)</small>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Update existing TLDs</label>
+                <select class="form-select" id="update_existing">
+                    <option value="1" selected>Yes</option>
+                    <option value="0">No</option>
+                </select>
+                <small class="form-hint">Jika No, TLD yang sudah ada tidak diubah</small>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Dry run</label>
+                <select class="form-select" id="dry_run">
+                    <option value="0" selected>No</option>
+                    <option value="1">Yes</option>
+                </select>
+                <small class="form-hint">Yes = hanya lihat hasil, tanpa menulis DB</small>
+            </div>
+            <div class="col-12 d-flex gap-2">
+                <button class="btn btn-outline-secondary" id="btn-preview" type="button">Load Preview</button>
+                <button class="btn btn-primary" id="btn-apply" type="button">Apply Selected</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="card mt-3">
+    <div class="card-body">
+        <h4 class="card-title">Preview TLDs</h4>
+        <p class="text-muted mb-2">Centang TLD yang ingin diimport/sync. TLD existing dengan registrar lain tidak dicentang secara default.</p>
+        <div class="table-responsive">
+            <table class="table" id="preview-table">
+                <thead>
+                <tr>
+                    <th style="width: 40px"><input type="checkbox" id="check-all"></th>
+                    <th>TLD</th>
+                    <th>Register</th>
+                    <th>Renew</th>
+                    <th>Transfer</th>
+                    <th>Status</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    (function() {
+        const apiPreview = "{{ 'api/admin/daftarnamasync/preview'|link }}";
+        const apiSyncSelected = "{{ 'api/admin/daftarnamasync/sync_selected'|link }}";
+
+        const $btnPreview = $('#btn-preview');
+        const $btnApply = $('#btn-apply');
+        const $tableBody = $('#preview-table tbody');
+        const $checkAll = $('#check-all');
+
+        function normalizeRow(row) {
+            row.exists = !!row.exists;
+            return row;
+        }
+
+        function renderRows(rows) {
+            $tableBody.empty();
+            rows.forEach(function(row) {
+                row = normalizeRow(row);
+                const isOtherRegistrar = row.exists && row.existing_registrar && row.existing_registrar !== 'DaftarNama';
+                const checked = (!row.exists || (!isOtherRegistrar && row.exists)) ? 'checked' : '';
+                const status = row.exists
+                    ? (isOtherRegistrar ? 'Exists (other registrar: ' + row.existing_registrar + ')' : 'Exists (DaftarNama)')
+                    : 'New';
+                const trClass = isOtherRegistrar ? 'text-muted' : '';
+                const html = `
+                    <tr class="${trClass}">
+                        <td><input type="checkbox" class="tld-check" value="${row.tld}" ${checked}></td>
+                        <td>${row.tld}</td>
+                        <td>${row.price_registration}</td>
+                        <td>${row.price_renew}</td>
+                        <td>${row.price_transfer}</td>
+                        <td>${status}</td>
+                    </tr>
+                `;
+                $tableBody.append(html);
+            });
+        }
+
+        function getOptions() {
+            return {
+                source_currency: $('#source_currency').val() || 'IDR',
+                update_existing: $('#update_existing').val(),
+                dry_run: $('#dry_run').val(),
+                CSRFToken: $('#csrf').val()
+            };
+        }
+
+        $btnPreview.on('click', function() {
+            $btnPreview.prop('disabled', true).text('Loading...');
+            $.post(apiPreview, getOptions(), function(res) {
+                const payload = res && res.result ? res.result : res;
+                renderRows((payload && payload.rows) || []);
+            }).fail(function(xhr) {
+                alert(xhr.responseText || 'Preview failed');
+            }).always(function() {
+                $btnPreview.prop('disabled', false).text('Load Preview');
+            });
+        });
+
+        $btnApply.on('click', function() {
+            const selected = [];
+            $('.tld-check:checked').each(function() {
+                selected.push($(this).val());
+            });
+            if (selected.length === 0) {
+                alert('Tidak ada TLD dipilih');
+                return;
+            }
+            const payload = getOptions();
+            payload.tlds = selected;
+
+            $btnApply.prop('disabled', true).text('Processing...');
+            $.post(apiSyncSelected, payload, function(res) {
+                const payloadRes = res && res.result ? res.result : res;
+                const s = payloadRes.summary || {};
+                alert('Selesai. Dibuat: ' + (s.created||0) + ', Update: ' + (s.updated||0) + ', Skip: ' + (s.skipped||0));
+            }).fail(function(xhr) {
+                alert(xhr.responseText || 'Sync failed');
+            }).always(function() {
+                $btnApply.prop('disabled', false).text('Apply Selected');
+            });
+        });
+
+        $checkAll.on('change', function() {
+            const checked = $(this).is(':checked');
+            $('.tld-check').prop('checked', checked);
+        });
+    })();
+</script>
+{% endblock %}
