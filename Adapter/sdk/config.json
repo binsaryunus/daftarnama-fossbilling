@@ -1,0 +1,36 @@
+{
+    "version": "1.3.0",
+    "type": "registrar",
+    "name": "Daftarnama.name",
+    "description": "Daftarnama.description",
+    "authors": [
+        {
+            "name": "Exabytes Network Indonesia",
+            "url": "https://exabytes.co.id"
+        }
+    ],
+    "module": {
+        "row": "Daftarnama.module_row",
+        "rows": "Daftarnama.module_row_plural",
+        "row_key": "description"
+    },
+    "package": {
+        "name_key": "domain"
+    },
+    "service": {
+        "name_key": "domain"
+    },
+    "email_tags": {
+        "module": [],
+        "package": [],
+        "service": [
+            "domain"
+        ]
+    },
+    "features": {
+        "dns_management": 0,
+        "email_forwarding": 0,
+        "id_protection": 0,
+        "epp_code": 1
+    }
+}

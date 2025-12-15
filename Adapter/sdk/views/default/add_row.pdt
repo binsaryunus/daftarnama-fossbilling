@@ -1,0 +1,49 @@
+<?php
+    $this->Widget->clear();
+    $this->Widget->create($this->_('Daftarnama.add_row.box_title', true));
+?>
+<div class="inner">
+    <?php
+        $this->Form->create();
+    ?>
+    <div class="pad">
+        <ul>
+            <li>
+                <?php
+                    $this->Form->label($this->_('Daftarnama.row_meta.description', true), 'description');
+                    $this->Form->fieldText('description', ($vars->description ?? null), ['id' => 'description']);
+                ?>
+            </li>
+            <li>
+                <?php
+                    $this->Form->label($this->_('Daftarnama.row_meta.api_key', true), 'api_key');
+                    $this->Form->fieldText('api_key', ($vars->api_key ?? null), ['id' => 'api_key']);
+                ?>
+            </li>
+            <li>
+                <?php
+                    $this->Form->fieldCheckbox('is_sandbox', 'true', ($vars->is_sandbox ?? null) == 'true', ['id' => 'is_sandbox']);
+                    $this->Form->label($this->_('Daftarnama.row_meta.use_sandbox', true), 'is_sandbox', ['class' => 'inline']);
+                ?>
+            </li>
+            <li>
+                <?php
+                    $this->Form->label($this->_('Daftarnama.row_meta.api_url', true), 'api_url');
+                    $this->Form->fieldText('api_url', ($vars->api_url ?? null), ['id' => 'api_url']);
+                ?>
+            </li>
+        </ul>
+    </div>
+    <div class="button_row">
+        <?php
+            $this->Form->fieldSubmit('save', $this->_('Daftarnama.add_row.add_btn', true), ['class' => 'btn btn-primary pull-right']);
+        ?>
+    </div>
+    <?php
+        $this->Form->end();
+    ?>
+</div>
+<?php
+    $this->Widget->end();
+?>
+

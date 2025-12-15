@@ -1,0 +1,116 @@
+{
+    "name": "DaftarNama",
+    "title": "DaftarNama Domain Registrar",
+    "description": "Registrar domain Indonesia - DaftarNama adapter untuk FOSSBilling",
+    "version": "1.0.0",
+    "author": "https://apiku.id",
+    "supports": {
+        "domain_registration": true,
+        "domain_transfer": true,
+        "domain_renewal": true,
+        "nameserver_modification": true,
+        "contact_modification": true,
+        "domain_lock": true,
+        "privacy_protection": false,
+        "epp_code": true,
+        "tld_import": true,
+        "pricing_sync": true
+    },
+    "admin_tools": {
+        "import_tlds": {
+            "label": "Import TLDs from DaftarNama",
+            "description": "Import all available TLD pricing from DaftarNama API",
+            "icon": "fas fa-download",
+            "action": "import_pricing",
+            "confirm": "This will import TLD pricing from DaftarNama. Continue?"
+        },
+        "sync_pricing": {
+            "label": "Sync Current Pricing", 
+            "description": "Update existing TLD prices with latest from DaftarNama",
+            "icon": "fas fa-sync",
+            "action": "sync_pricing",
+            "confirm": "This will update current TLD pricing. Continue?"
+        },
+        "view_tlds": {
+            "label": "View Available TLDs",
+            "description": "Show all TLDs available from DaftarNama",
+            "icon": "fas fa-list",
+            "action": "view_tlds"
+        }
+    },
+    "config": {
+        "api_key": {
+            "type": "text",
+            "label": "API Key",
+            "description": "API Key dari akun DaftarNama Anda",
+            "required": true,
+            "placeholder": "Masukkan API Key DaftarNama"
+        },
+        "account_description": {
+            "type": "text", 
+            "label": "Username/Email Customer",
+            "description": "Email atau username yang akan digunakan sebagai customer",
+            "required": false,
+            "placeholder": "customer@domain.com"
+        },
+        "api_url": {
+            "type": "text",
+            "label": "API URL (Optional)",
+            "description": "Custom API URL jika berbeda dari default",
+            "required": false,
+            "placeholder": "https://api.daftarnama.id/v1"
+        },
+        "test_mode": {
+            "type": "select",
+            "label": "Test Mode",
+            "options": {
+                "0": "Live Mode",
+                "1": "Sandbox Mode"
+            },
+            "description": "Gunakan Sandbox untuk testing",
+            "required": true,
+            "default": "1"
+        }
+    },
+    "pricing": {
+        "registration": {
+            ".com": 150000,
+            ".net": 180000,
+            ".org": 170000,
+            ".info": 140000,
+            ".biz": 160000,
+            ".id": 200000,
+            ".co.id": 180000,
+            ".web.id": 160000,
+            ".my.id": 120000
+        },
+        "renewal": {
+            ".com": 160000,
+            ".net": 190000,
+            ".org": 180000,
+            ".info": 150000,
+            ".biz": 170000,
+            ".id": 220000,
+            ".co.id": 200000,
+            ".web.id": 180000,
+            ".my.id": 140000
+        },
+        "transfer": {
+            ".com": 150000,
+            ".net": 180000,
+            ".org": 170000,
+            ".info": 140000,
+            ".biz": 160000,
+            ".id": 200000,
+            ".co.id": 180000,
+            ".web.id": 160000,
+            ".my.id": 120000
+        }
+    },
+    "currency": "IDR",
+    "supported_tlds": [
+        ".com", ".net", ".org", ".info", ".biz",
+        ".id", ".co.id", ".web.id", ".my.id", ".or.id", 
+        ".ac.id", ".sch.id", ".go.id"
+    ]
+}

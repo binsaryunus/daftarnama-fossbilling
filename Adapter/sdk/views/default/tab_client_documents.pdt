@@ -1,0 +1,18 @@
+
+    <?php
+    $this->Form->create();
+    ?>
+    <div class="row panel-fix">
+        <div class="col-md-12">
+            <div class="mb-3 alert alert-warning">
+                <?php $this->_('Daftarnama.tab_documents.document_information') ?>
+            </div>
+            <?php $this->_('Daftarnama.tab_documents.document_status') ?>: <span class="badge badge-secondary"><?php echo $document_status ?></span>
+            <div class="mt-3">
+                <a href="<?php echo $upload_document_url ?>" target="_blank" class="btn btn-primary"><?php $this->_('Daftarnama.tab_documents.upload_document') ?></a>
+            </div>
+        </div>
+    </div>
+    <?php
+    $this->Form->end();
+    ?>

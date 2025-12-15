@@ -1,0 +1,17 @@
+
+    <?php
+    $this->Form->create();
+    ?>
+    <div class="pad">
+        <ul>
+            <li>
+                <?php $this->_('Daftarnama.tab_documents.document_status') ?>: <strong><?php echo $document_status ?></strong>
+            </li>
+            <li>
+                <a href="<?php echo $upload_document_url ?>" target="_blank" class="btn btn-primary"><?php $this->_('Daftarnama.tab_documents.upload_document') ?></a>
+            </li>
+        </ul>
+    </div>
+    <?php
+    $this->Form->end();
+    ?>

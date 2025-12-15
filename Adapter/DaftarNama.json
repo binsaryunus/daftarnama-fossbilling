@@ -1,0 +1,38 @@
+{
+    "name": "DaftarNama",
+    "title": "DaftarNama Domain Registrar",
+    "description": "Registrar domain Indonesia - DaftarNama adapter untuk FOSSBilling",
+    "version": "1.0.0",
+    "author": "https://apiku.id",
+    "supports": {
+        "domain_registration": true,
+        "domain_transfer": true,
+        "domain_renewal": true,
+        "nameserver_modification": true,
+        "contact_modification": true,
+        "domain_lock": true,
+        "privacy_protection": false,
+        "epp_code": true,
+        "tld_import": true,
+        "pricing_sync": true
+    },
+    "config": {
+        "api_key": {
+            "type": "text",
+            "label": "API Key",
+            "description": "API Key dari akun DaftarNama Anda",
+            "required": true,
+            "placeholder": "Masukkan API Key DaftarNama"
+        },
+        "test_mode": {
+            "type": "radio",
+            "label": "Test Mode",
+            "description": "Gunakan Sandbox mode untuk testing",
+            "options": {
+                "1": "Yes (Sandbox)",
+                "0": "No (Production)"
+            },
+            "default": "1"
+        }
+    }
+}
